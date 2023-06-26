@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:head>
+        <h:outputStylesheet library="css" name="main.css"/>
+        <title><ui:insert name="windowTitle"/></title>
+    </h:head>
+
+    <h:body>
+        <h:panelGroup id="main" layout="block">
+
+            <h:panelGroup id="top" layout="block">
+                <ui:insert name="top">
+                    <ui:include src="/includes/header.xhtml"/>
+                </ui:insert>
+            </h:panelGroup>
+
+            <h:panelGroup id="content" layout="block">
+                
+                <h:panelGroup id="left" layout="block">
+                    <ui:insert name="left">
+                        <ui:include src="/includes/menu.xhtml"/>
+                    </ui:insert>
+                </h:panelGroup>
+                
+                <h:panelGroup id="right" layout="block">
+                    
+                    <h:panelGroup id="right_title" layout="block">
+                        <h:outputText value="#{menuController.selectedItem.title}"/>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="right_content" layout="block">
+                        <ui:insert name="content"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:panelGroup>
+            
+            <h:panelGroup id="bottom" layout="block">
+                <ui:insert name="bottom">
+                    <ui:include src="/includes/footer.xhtml"/>
+                </ui:insert>
+            </h:panelGroup>
+        </h:panelGroup>
+    </h:body>
+
+</html>

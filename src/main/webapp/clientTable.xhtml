@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+      
+    <ui:composition template="/templates/mainTemplate.xhtml">
+         <ui:define name="windowTitle">
+             <h:outputText value="Klienci"/>
+         </ui:define>
+         
+         <ui:define name="content">          
+            <h:form id="client_table_form">
+                
+               <p:dataTable id="client_table" var="client" value="#{clientController.clients}"
+                    			 paginator="true" rows="7" paginatorPosition="bottom" rowsPerPageTemplate="5,7,10"
+                                 selection="#{clientController.client}" rowKey="#{client.id}" selectionMode="single">
+                                 
+                    <p:ajax event="rowSelect" process="@this" update="@this"/>
+                	<p:ajax event="rowUnselect" process="@this" update="@this"/>
+                    
+                    
+                    <f:facet name="header">
+	                    <p:commandButton value="Dodaj" id="przycisk_dodaj" 
+	                                     update=":client_dialog_form" oncomplete="PF('client_dialog').show()"
+	                                     actionListener="#{clientController.add()}" style="margin-right: 5px;"/>
+	                    
+	                    <p:commandButton value="Edytuj" id="przycisk_edytuj" disabled="#{clientController.client == null or clientController.client.id == null}"
+	                                     update=":client_dialog_form" oncomplete="PF('client_dialog').show()"
+	                                     actionListener="#{clientController.edit()}" style="margin-right: 5px;"/>
+	                    
+	                    <p:commandButton value="Usuń" id="przycisk_usun" disabled="#{clientController.client == null or clientController.client.id == null}"
+	                                     update=":client_dialog_form" oncomplete="PF('client_dialog').show()"
+	                                     actionListener="#{clientController.beforeDelete()}"/>
+	                   
+	                </f:facet>
+               <p:column>
+                        <f:facet name="header">Imię</f:facet>
+                        <h:outputText value="#{client.firstName}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Nazwisko</f:facet>
+                        <h:outputText value="#{client.surName}"/>
+                    </p:column>
+                   <p:column>
+                        <f:facet name="header">Numery zamówień</f:facet>
+                        <h:outputText value="#{client.getOrdersList() }"/>
+                    </p:column> 
+                    
+               	</p:dataTable>
+            </h:form>
+            
+			<ui:include src="/includes/clientDialog.xhtml"/>
+	                
+         </ui:define>
+      </ui:composition>  
+
+</html>
+

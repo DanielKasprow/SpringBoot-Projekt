@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+      
+    <ui:composition template="/templates/mainTemplate.xhtml">
+         <ui:define name="windowTitle">
+             <h:outputText value="Zamowienia"/>
+         </ui:define>
+         
+         <ui:define name="content">          
+              	<p:tabView id="order_tabView">
+		            <p:tab title="Zamówienia">
+  		    	        <h:form id="order_table_form">
+  		    	        
+			            	<p:dataTable id="order_table" var="order" value="#{orderController.orders}"
+	                    			 paginator="true" rows="7" paginatorPosition="bottom" rowsPerPageTemplate="5,7,10"
+	                                 selection="#{orderController.order}" rowKey="#{order.idOrder}" selectionMode="single">
+	                    
+			                    <p:ajax event="rowSelect" process="@this" update=":order_tabView"/>
+			                	<p:ajax event="rowUnselect" process="@this" update=":order_tabView"/>
+			                    
+			                    <f:facet name="header">
+				                    <p:commandButton value="Dodaj" id="przycisk_dodaj" 
+				                                     update=":order_tabView:order_dialog_form:dane_ordera" oncomplete="PF('order_dialog').show()"
+				                                     actionListener="#{orderController.add()}" style="margin-right: 5px;"/>
+				                    
+				                    <p:commandButton value="Edytuj" id="przycisk_edytuj" disabled="#{orderController.order == null or orderController.order.idOrder == null}"
+				                                     update=":order_tabView:order_dialog_form:dane_ordera" oncomplete="PF('order_dialog').show()"
+				                                     actionListener="#{orderController.edit()}" style="margin-right: 5px;"/>
+				                    
+				                    <p:commandButton value="Usuń" id="przycisk_usun" disabled="#{orderController.order == null or orderController.order.idOrder == null}"
+				                                     update=":order_tabView:order_dialog_form:dane_ordera" oncomplete="PF('order_dialog').show()"
+				                                     actionListener="#{orderController.beforeDelete()}"/>
+				                   
+				                </f:facet>
+			                     <p:column>
+                        <f:facet name="header">Klient</f:facet>
+                        <h:outputText value="#{order.client.firstName} #{order.client.surName}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Numer zamówienia</f:facet>
+                        <h:outputText value="#{order.idOrder}"/>
+                    </p:column>
+
+			               	</p:dataTable>    
+		               	</h:form>
+		               	
+		               	<ui:include src="/includes/orderDialog.xhtml"/>
+		            </p:tab>
+		            <p:tab title="Produkty" disabled="#{orderController.order == null or orderController.order.idOrder == null}">
+		            	<h:form id="order_product_table_form">
+			               	<p:dataTable id="order_product_table" var="product" value="#{orderController.order.productList}"
+			               				 lazy="true">
+	                    	                 	
+	                    	                 	
+	                    	    <f:facet name="header">
+				               <p:commandButton value="Dodaj produkt" id="przycisk_dodaj_produkt" 
+				                                     oncomplete="PF('order_product_dialog').show()"
+				                                     style="margin-right: 5px;"
+				                                     actionListener="#{orderController.beforeAddProduct}"
+				                                     update= ":order_tabView:order_product_dialog_form"/>
+				                <p:commandButton value="Usuń produkt" id="przycisk_usun_produkt" 
+				                                     oncomplete="PF('order_product_dialog').show()"
+				                                     style="margin-right: 5px;"
+ 													 actionListener="#{orderController.beforeDeleteProduct}"
+ 													 update= ":order_tabView:order_product_dialog_form"/>			                    
+				                </f:facet>
+	                    	                 		                  	                    
+			                    <p:column>
+			                        <f:facet name="header">Nazwa</f:facet>
+			                        <h:outputText value="#{product.name}"/>
+			                    </p:column>
+			
+			                    <p:column>
+			                        <f:facet name="header">Opis</f:facet>
+			                        <h:outputText value="#{product.description}"/>
+			                    </p:column>
+			
+			
+			
+			               	</p:dataTable>  
+		               	</h:form>	 
+		               	
+		              <ui:include src="/includes/orderProductDialog.xhtml"/> 	
+		              
+		            </p:tab>
+		        </p:tabView>
+      	               	                
+         </ui:define>
+      </ui:composition>  
+
+</html>
+
+
+

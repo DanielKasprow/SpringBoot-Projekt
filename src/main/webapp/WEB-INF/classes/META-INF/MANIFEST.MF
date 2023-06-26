@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 17
+Implementation-Title: project
+Implementation-Version: 1.0-SNAPSHOT
+Main-Class: pl.opole.uni.project.ProjectApplication
+Created-By: Maven Integration for Eclipse
+
